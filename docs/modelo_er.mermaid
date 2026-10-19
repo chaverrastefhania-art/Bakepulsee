@@ -1,0 +1,74 @@
+erDiagram
+    ROLES ||--o{ USUARIOS : "clasifica"
+    USUARIOS ||--o{ DIRECCIONES : "registra"
+    USUARIOS ||--o| CARRITOS : "posee"
+    CARRITOS ||--o{ CARRITO_ITEMS : "contiene"
+    PRODUCTOS ||--o{ CARRITO_ITEMS : "agregado en"
+    CATEGORIAS ||--o{ PRODUCTOS : "agrupa"
+    PRODUCTOS ||--o{ PRODUCTO_IMAGENES : "tiene"
+    PRODUCTOS ||--o{ MOVIMIENTOS_INVENTARIO : "registra"
+    USUARIOS ||--o{ PEDIDOS : "realiza (cliente)"
+    USUARIOS ||--o{ PEDIDOS : "atiende (empleado)"
+    DIRECCIONES ||--o{ PEDIDOS : "destino"
+    PEDIDOS ||--|{ PEDIDO_ITEMS : "detalla"
+    PRODUCTOS ||--o{ PEDIDO_ITEMS : "se vende en"
+    PEDIDOS ||--o{ PAGOS : "se paga con"
+    PEDIDOS ||--o| ENTREGAS : "se entrega por"
+    USUARIOS ||--o{ ENTREGAS : "reparte (repartidor)"
+    PEDIDOS ||--o{ PEDIDO_HISTORIAL : "cambia de estado"
+    PEDIDOS ||--o{ RESENAS : "genera"
+    PRODUCTOS ||--o{ RESENAS : "recibe"
+    USUARIOS ||--o{ RESENAS : "escribe"
+    USUARIOS ||--o{ FAVORITOS : "marca"
+    PRODUCTOS ||--o{ FAVORITOS : "es favorito"
+    USUARIOS ||--o{ NOTIFICACIONES : "recibe"
+    USUARIOS ||--o{ PUSH_SUSCRIPCIONES : "registra"
+    USUARIOS ||--o{ MENSAJES_CONTACTO : "envia"
+    PROVEEDORES ||--o{ COMPRAS : "surte"
+    COMPRAS ||--|{ COMPRA_DETALLE : "detalla"
+    INSUMOS ||--o{ COMPRA_DETALLE : "se compra en"
+    USUARIOS ||--o{ COMPRAS : "registra"
+
+    ROLES { tinyint id PK
+      varchar nombre UK }
+    USUARIOS { bigint id PK
+      tinyint rol_id FK
+      varchar email UK
+      varchar password_hash
+      enum estado }
+    CATEGORIAS { int id PK
+      varchar nombre UK }
+    PRODUCTOS { bigint id PK
+      int categoria_id FK
+      varchar nombre
+      decimal precio
+      int stock
+      enum estado }
+    PEDIDOS { bigint id PK
+      varchar codigo UK
+      bigint cliente_id FK
+      bigint atendido_por FK
+      enum canal
+      enum estado
+      decimal total }
+    PEDIDO_ITEMS { bigint id PK
+      bigint pedido_id FK
+      bigint producto_id FK
+      int cantidad
+      decimal precio_unitario }
+    PAGOS { bigint id PK
+      bigint pedido_id FK
+      enum metodo
+      enum estado }
+    ENTREGAS { bigint id PK
+      bigint pedido_id FK
+      bigint repartidor_id FK
+      enum estado }
+    INSUMOS { int id PK
+      varchar nombre
+      decimal stock_actual }
+    PROVEEDORES { int id PK
+      varchar nombre }
+    COMPRAS { bigint id PK
+      int proveedor_id FK
+      decimal total }

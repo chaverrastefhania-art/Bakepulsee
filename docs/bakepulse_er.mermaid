@@ -1,0 +1,117 @@
+erDiagram
+  ROLES ||--o{ USERS : "clasifica"
+  USERS ||--o{ ADDRESSES : "guarda"
+  CATEGORIES ||--o{ PRODUCTS : "agrupa"
+  USERS ||--o{ ORDERS : "realiza (cliente)"
+  USERS |o--o{ ORDERS : "entrega (repartidor)"
+  ORDERS ||--|{ ORDER_ITEMS : "contiene"
+  PRODUCTS ||--o{ ORDER_ITEMS : "se vende en"
+  ORDERS ||--|{ ORDER_STATUS_HISTORY : "registra"
+  USERS ||--o{ ORDER_STATUS_HISTORY : "cambia estado"
+  PRODUCTS ||--o{ STOCK_MOVEMENTS : "mueve inventario"
+  USERS ||--o{ STOCK_MOVEMENTS : "registra"
+  ORDERS |o--o{ STOCK_MOVEMENTS : "origina"
+  USERS ||--o{ REVIEWS : "escribe"
+  PRODUCTS ||--o{ REVIEWS : "recibe"
+  ORDERS ||--o{ REVIEWS : "habilita"
+  USERS |o--o{ CONTACT_MESSAGES : "envia"
+  USERS ||--o{ PASSWORD_RESETS : "solicita"
+
+  ROLES {
+    tinyint id PK
+    varchar name UK
+    varchar description
+  }
+  USERS {
+    int id PK
+    tinyint role_id FK
+    varchar name
+    varchar email UK
+    varchar password_hash
+    varchar phone
+    bool is_active
+    datetime accepted_terms_at
+  }
+  ADDRESSES {
+    int id PK
+    int user_id FK
+    varchar label
+    varchar address_line
+    varchar neighborhood
+    varchar city
+    bool is_default
+  }
+  CATEGORIES {
+    int id PK
+    varchar name UK
+    bool is_active
+  }
+  PRODUCTS {
+    int id PK
+    int category_id FK
+    varchar name
+    decimal price
+    int stock
+    int min_stock
+    varchar image_url
+    bool is_active
+  }
+  ORDERS {
+    int id PK
+    int customer_id FK
+    int delivery_user_id FK
+    enum delivery_type
+    enum payment_method
+    enum payment_status
+    enum status
+    decimal subtotal
+    decimal delivery_fee
+    decimal total
+    datetime scheduled_for
+  }
+  ORDER_ITEMS {
+    int id PK
+    int order_id FK
+    int product_id FK
+    varchar product_name
+    decimal unit_price
+    int quantity
+    decimal line_total
+  }
+  ORDER_STATUS_HISTORY {
+    int id PK
+    int order_id FK
+    int changed_by FK
+    enum status
+    varchar comment
+  }
+  STOCK_MOVEMENTS {
+    int id PK
+    int product_id FK
+    int user_id FK
+    int order_id FK
+    enum type
+    int quantity
+  }
+  REVIEWS {
+    int id PK
+    int user_id FK
+    int product_id FK
+    int order_id FK
+    tinyint rating
+    bool is_visible
+  }
+  CONTACT_MESSAGES {
+    int id PK
+    int user_id FK
+    varchar name
+    varchar email
+    enum status
+  }
+  PASSWORD_RESETS {
+    int id PK
+    int user_id FK
+    char token_hash
+    datetime expires_at
+    datetime used_at
+  }
