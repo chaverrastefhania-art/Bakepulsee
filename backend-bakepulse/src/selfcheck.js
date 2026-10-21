@@ -3,7 +3,10 @@ import path from 'path'
 
 process.env.STORE_FILE = path.join(os.tmpdir(), `bakepulse-${Date.now()}.json`)
 process.env.SESSION_REQUEST_LIMIT = '5'
-delete process.env.MYSQL_HOST
+process.env.MYSQL_HOST = ''
+process.env.MYSQL_ADDON_HOST = ''
+process.env.MYSQL_ADDON_URI = ''
+process.env.MYSQL_URI = ''
 
 const { createApp } = await import('./app.js')
 const server = createApp().listen(0)

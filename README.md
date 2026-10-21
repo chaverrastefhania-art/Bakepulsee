@@ -42,9 +42,8 @@ El pool de MySQL también queda limitado a 5 conexiones, el tope del plan de Cle
 
 Sin variables `MYSQL_*`, la API guarda los datos en `backend-bakepulse/data/store.json`. En Vercel ese archivo no persiste entre instancias: hay que poner las credenciales de Clever Cloud en el proyecto.
 
-Copia `backend-bakepulse/.env.example` y completa:
+Copia `backend-bakepulse/.env.example`. Clever Cloud puede usar `MYSQL_ADDON_HOST`, `MYSQL_ADDON_PORT`, `MYSQL_ADDON_USER`, `MYSQL_ADDON_PASSWORD`, `MYSQL_ADDON_DB` y `MYSQL_ADDON_URI`. También valen `MYSQL_HOST`, `MYSQL_USER`, `MYSQL_PASSWORD` y `MYSQL_DATABASE`.
 
-- `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`
 - `MYSQL_CONNECTION_LIMIT=5`
 - `JWT_SECRET`
 - `CORS_ORIGIN=https://bakepulsee.vercel.app`

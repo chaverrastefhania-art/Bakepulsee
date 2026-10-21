@@ -64,11 +64,34 @@ export function getStore() {
   return active
 }
 
+export function mysqlEnv() {
+  let fromUri = {}
+  const uri = process.env.MYSQL_ADDON_URI || process.env.MYSQL_URI || ''
+  if (uri.startsWith('mysql://')) {
+    const parsed = new URL(uri)
+    fromUri = {
+      host: parsed.hostname,
+      port: parsed.port,
+      user: decodeURIComponent(parsed.username),
+      password: decodeURIComponent(parsed.password),
+      database: parsed.pathname.replace(/^\//, ''),
+    }
+  }
+  return {
+    host: process.env.MYSQL_HOST || process.env.MYSQL_ADDON_HOST || fromUri.host || '',
+    port: Number(process.env.MYSQL_PORT || process.env.MYSQL_ADDON_PORT || fromUri.port || 3306),
+    user: process.env.MYSQL_USER || process.env.MYSQL_ADDON_USER || fromUri.user || '',
+    password: process.env.MYSQL_PASSWORD || process.env.MYSQL_ADDON_PASSWORD || fromUri.password || '',
+    database: process.env.MYSQL_DATABASE || process.env.MYSQL_ADDON_DB || fromUri.database || '',
+  }
+}
+
 export async function initStore() {
   if (active) return active
-  if (process.env.MYSQL_HOST) {
+  const config = mysqlEnv()
+  if (config.host && config.user && config.database) {
     try {
-      active = await createMysqlStore()
+      active = await createMysqlStore(config)
       return active
     } catch (error) {
       console.error('MySQL no respondió. Sigo con el archivo local:', error.message)
@@ -586,20 +609,21 @@ async function createMemoryStore() {
   }
 }
 
-async function createMysqlStore() {
+async function createMysqlStore(config) {
   const mysql = await import('mysql2/promise')
   const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    port: Number(process.env.MYSQL_PORT || 3306),
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
+    host: config.host,
+    port: config.port,
+    user: config.user,
+    password: config.password,
+    database: config.database,
     waitForConnections: true,
     connectionLimit: Number(process.env.MYSQL_CONNECTION_LIMIT || 5),
     queueLimit: 0,
     charset: 'utf8mb4',
     timezone: '-05:00',
     enableKeepAlive: true,
+    ssl: process.env.MYSQL_SSL === '0' ? undefined : { rejectUnauthorized: false },
   })
   const conn = await pool.getConnection()
   try {
