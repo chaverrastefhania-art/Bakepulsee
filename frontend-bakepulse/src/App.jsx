@@ -179,7 +179,7 @@ export default function App() {
   const activeNav = route.name === 'home' || route.name === 'product' ? 'home' : route.name === 'checkout' ? 'bag' : route.name
 
   return (
-    <div className="min-h-screen bg-cream text-ink">
+    <div className="flex min-h-screen flex-col bg-cream text-ink">
       <header className="sticky top-0 z-20 border-b border-line bg-white">
         <div className="mx-auto flex h-[88px] max-w-6xl items-center justify-between gap-4 px-5 md:h-[100px] md:px-8">
           <Logo />
@@ -202,7 +202,7 @@ export default function App() {
         <button className="block w-full bg-butter px-5 py-3 text-left text-[13px]" onClick={() => setNotice('')}>{notice}</button>
       )}
 
-      <main className="mx-auto max-w-6xl px-5 py-8 pb-28 md:px-8 md:pb-16">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-8 pb-28 md:px-8 md:pb-16">
         {!ready && <p className="text-muted">Calentando el horno…</p>}
         {ready && !catalog && <p>No hay catálogo guardado y no hay conexión. Ábrela cuando vuelva la red.</p>}
         {ready && catalog && route.name === 'home' && (
