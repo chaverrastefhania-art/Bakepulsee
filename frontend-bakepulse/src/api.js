@@ -1,4 +1,4 @@
-const API_ORIGIN = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? '' : 'https://bakepulsee-7koy.vercel.app')).replace(/\/$/, '')
+const API_ORIGIN = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
 
 const SID = 'bp-sid'
 const TOKEN = 'bp-token'

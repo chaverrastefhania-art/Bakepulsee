@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { initStore } from './store.js'
 
 const SECRET = process.env.JWT_SECRET || 'bakepulse-dev-cambia-este-secreto'
-const origins = (process.env.CORS_ORIGIN || 'http://localhost:5173,https://bakepulsee.vercel.app,https://bakepulsee-kappa.vercel.app')
+const origins = (process.env.CORS_ORIGIN || 'http://localhost:5173,https://bakepulse.vercel.app,https://bakepulsee.vercel.app')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean)
@@ -18,7 +18,7 @@ function originAllowed(origin) {
   try {
     const url = new URL(origin)
     if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') return true
-    return url.protocol === 'https:' && url.hostname.endsWith('.vercel.app') && url.hostname.includes('bakepulsee')
+    return url.protocol === 'https:' && url.hostname.endsWith('.vercel.app') && url.hostname.includes('bakepulse')
   } catch {
     return false
   }
