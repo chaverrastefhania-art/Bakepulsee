@@ -42,13 +42,14 @@ export const inputClass = 'h-12 w-full rounded-lg border border-line bg-white px
 
 export function Button({ children, tone = 'cyan', className = '', ...props }) {
   const tones = {
-    cyan: 'bg-cyan text-ink',
-    ghost: 'border border-line bg-white text-ink',
+    cyan: 'bg-cyan text-ink hover:bg-[#1bc8e4] hover:shadow-md',
+    ghost: 'border border-line bg-white text-ink hover:border-ink hover:bg-sand',
     stone: 'bg-stone text-muted',
-    sand: 'bg-sand text-ink',
+    sand: 'bg-sand text-ink hover:bg-line',
+    leaf: 'bg-leaf text-white',
   }
   return (
-    <button className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold ${tones[tone]} ${className}`} {...props}>
+    <button className={`inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold transition active:scale-[0.98] disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100 ${tones[tone]} ${className}`} {...props}>
       {children}
     </button>
   )
@@ -56,7 +57,7 @@ export function Button({ children, tone = 'cyan', className = '', ...props }) {
 
 export function Choice({ active, icon, title, text, onClick }) {
   return (
-    <button type="button" onClick={onClick} className={`flex w-full items-center gap-3 rounded-xl p-3.5 text-left ${active ? 'border-2 border-cyan bg-mist' : 'border border-line bg-white'}`}>
+    <button type="button" onClick={onClick} className={`flex w-full cursor-pointer items-center gap-3 rounded-xl p-3.5 text-left transition hover:border-cyan ${active ? 'border-2 border-cyan bg-mist' : 'border border-line bg-white'}`}>
       <Icon name={icon} />
       <span className="min-w-0 flex-1">
         <span className="block text-[13px] font-semibold">{title}</span>

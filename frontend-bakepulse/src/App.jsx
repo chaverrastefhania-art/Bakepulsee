@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import PWABadge from './PWABadge.jsx'
 import {
   api, cop, markBooted, newSession, readAccount, readBudget, readCart, readCatalog,
@@ -342,10 +342,21 @@ function Home({ catalog, query, setQuery, category, setCategory, add, online, in
 }
 
 function Card({ product, add, go }) {
+  const [added, setAdded] = useState(false)
+  const timer = useRef(null)
+  useEffect(() => () => clearTimeout(timer.current), [])
+
+  function onAdd() {
+    add(product)
+    setAdded(true)
+    clearTimeout(timer.current)
+    timer.current = setTimeout(() => setAdded(false), 1400)
+  }
+
   return (
     <article className="flex flex-col gap-3.5">
-      <button onClick={() => go(`#/producto/${product.id}`)} className="relative block w-full text-left">
-        <img src={product.imageUrl} alt={product.name} className="h-[220px] w-full rounded-2xl object-cover md:h-[250px]" />
+      <button title={`Ver ${product.name}`} onClick={() => go(`#/producto/${product.id}`)} className="relative block w-full cursor-pointer text-left">
+        <img src={product.imageUrl} alt={product.name} className="h-[220px] w-full rounded-2xl object-cover transition hover:brightness-95 md:h-[250px]" />
         {product.badge && <span className="absolute left-3 top-3"><Pill>{product.badge}</Pill></span>}
       </button>
       <div className="min-h-[88px]">
@@ -358,7 +369,11 @@ function Card({ product, add, go }) {
         <p className={`text-[11px] ${product.available ? 'text-leaf' : 'text-muted'}`}>{product.available ? `${product.stock} disponibles` : 'Agotado por hoy'}</p>
       </div>
       {product.available
-        ? <Button className="w-full" onClick={() => add(product)}><Icon name="plus" className="size-[18px]" /> Agregar</Button>
+        ? (
+          <Button className="w-full" tone={added ? 'leaf' : 'cyan'} title={added ? 'Ya está en el carrito' : 'Agregar al carrito'} onClick={onAdd}>
+            <Icon name={added ? 'check' : 'plus'} className="size-[18px]" /> {added ? 'Agregado' : 'Agregar'}
+          </Button>
+        )
         : <Button tone="stone" className="w-full" disabled>Agotado</Button>}
     </article>
   )
