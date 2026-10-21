@@ -1,4 +1,4 @@
-const API_ORIGIN = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+const API_ORIGIN = ''
 
 const SID = 'bp-sid'
 const TOKEN = 'bp-token'

@@ -29,6 +29,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
         navigateFallback: 'index.html',
         cleanupOutdatedCaches: true,
+        skipWaiting: true,
         clientsClaim: true,
         runtimeCaching: [
           {
@@ -40,7 +41,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: ({ url }) => url.pathname.startsWith('/api/v1/bootstrap'),
+            urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith('/api/v1/bootstrap'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'bakepulse-catalog',

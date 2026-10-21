@@ -1,6 +1,5 @@
 import 'dotenv/config'
 import bcrypt from 'bcryptjs'
-import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import jwt from 'jsonwebtoken'
@@ -131,12 +130,19 @@ export function createApp() {
   const app = express()
   app.set('trust proxy', 1)
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
-  app.use(cors({
-    origin(origin, callback) {
-      callback(null, originAllowed(origin))
-    },
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-session-id'],
-  }))
+  app.use((req, res, next) => {
+    const origin = req.get('origin')
+    if (originAllowed(origin)) {
+      if (origin) {
+        res.set('Access-Control-Allow-Origin', origin)
+        res.set('Vary', 'Origin')
+      }
+      res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-session-id')
+      res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    }
+    if (req.method === 'OPTIONS') return res.status(204).end()
+    next()
+  })
   app.use(express.json({ limit: '32kb' }))
 
   app.get('/api/v1/health', async (_req, res) => {
@@ -146,6 +152,7 @@ export function createApp() {
 
   const v1 = express.Router()
   v1.use(async (req, res, next) => {
+    if (req.method === 'OPTIONS') return next()
     const sessionId = String(req.get('x-session-id') || '')
     if (!/^[\w-]{8,80}$/.test(sessionId)) {
       return res.status(400).json({ error: 'Falta la sesión del navegador. Recarga la página.' })
