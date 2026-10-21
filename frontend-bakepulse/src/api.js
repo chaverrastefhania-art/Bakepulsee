@@ -1,3 +1,5 @@
+const API_ORIGIN = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? '' : 'https://bakepulsee-7koy.vercel.app')).replace(/\/$/, '')
+
 const SID = 'bp-sid'
 const TOKEN = 'bp-token'
 const CATALOG = 'bp-catalog'
@@ -80,7 +82,7 @@ export async function api(path, { method = 'GET', body } = {}) {
   }
   const auth = readToken()
   if (auth) headers.Authorization = `Bearer ${auth}`
-  const response = await fetch(`/api/v1${path}`, {
+  const response = await fetch(`${API_ORIGIN}/api/v1${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,

@@ -8,10 +8,21 @@ import { z } from 'zod'
 import { initStore } from './store.js'
 
 const SECRET = process.env.JWT_SECRET || 'bakepulse-dev-cambia-este-secreto'
-const origins = (process.env.CORS_ORIGIN || 'http://localhost:5173,https://bakepulsee.vercel.app')
+const origins = (process.env.CORS_ORIGIN || 'http://localhost:5173,https://bakepulsee.vercel.app,https://bakepulsee-kappa.vercel.app')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean)
+
+function originAllowed(origin) {
+  if (!origin || origins.includes(origin)) return true
+  try {
+    const url = new URL(origin)
+    if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') return true
+    return url.protocol === 'https:' && url.hostname.endsWith('.vercel.app') && url.hostname.includes('bakepulsee')
+  } catch {
+    return false
+  }
+}
 
 let ready
 
@@ -119,8 +130,13 @@ const actionSchema = z.object({
 export function createApp() {
   const app = express()
   app.set('trust proxy', 1)
-  app.use(helmet())
-  app.use(cors({ origin: origins, allowedHeaders: ['Content-Type', 'Authorization', 'x-session-id'] }))
+  app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
+  app.use(cors({
+    origin(origin, callback) {
+      callback(null, originAllowed(origin))
+    },
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-session-id'],
+  }))
   app.use(express.json({ limit: '32kb' }))
 
   app.get('/api/v1/health', async (_req, res) => {
