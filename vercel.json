@@ -1,0 +1,13 @@
+{
+  "installCommand": "npm install --prefix backend-bakepulse && npm install --prefix frontend-bakepulse",
+  "buildCommand": "npm run build --prefix frontend-bakepulse",
+  "outputDirectory": "frontend-bakepulse/dist",
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 15
+    }
+  }
+}

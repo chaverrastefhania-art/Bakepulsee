@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64.8" height="64.8" viewBox="0 0 64.8 64.8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Cupcake and pulse">
+<path id="Brand tile" d="M48.96 0H15.84C7.09181 0 0 7.09181 0 15.84V48.96C0 57.7082 7.09181 64.8 15.84 64.8H48.96C57.7082 64.8 64.8 57.7082 64.8 48.96V15.84C64.8 7.09181 57.7082 0 48.96 0Z" fill="url(#paint0_linear_0_20)"/>
+<path id="Frosting" d="M17.2788 37.44C16.5587 27.36 25.1993 21.6 36 20.16C46.8007 21.6 55.4413 27.36 54.7212 37.44H17.2788Z" fill="white"/>
+<path id="Frosting detail" d="M25.2 25.92C28.8 21.6 43.2 21.6 46.8 25.92" stroke-width="1.8" stroke-linecap="round" stroke="#E3D4F5"/>
+<path id="Cherry" d="M36 20.16C37.9882 20.16 39.6 18.5482 39.6 16.56C39.6 14.5718 37.9882 12.96 36 12.96C34.0118 12.96 32.4 14.5718 32.4 16.56C32.4 18.5482 34.0118 20.16 36 20.16Z" fill="#FFC107"/>
+<path id="Cupcake base" d="M18.72 37.44H53.28L48.24 54.72C47.76 56.16 46.8 56.88 45.36 56.88H26.64C25.2 56.88 24.24 56.16 23.76 54.72L18.72 37.44Z" fill="#FFC107"/>
+<path id="Pulse" d="M21.6 46.8H29.52L33.12 40.68L37.8 52.56L41.4 44.28L43.56 46.8H50.4" stroke-width="2.16" stroke-linecap="round" stroke="#4B2380"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_20" x1="0" y1="0" x2="64.8" y2="64.8" gradientUnits="userSpaceOnUse">
+<stop stop-color="#7B3FB8"/>
+<stop offset="1" stop-color="#4B2380"/>
+</linearGradient>
+</defs>
+</svg>
