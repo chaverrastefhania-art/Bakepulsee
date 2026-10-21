@@ -144,7 +144,8 @@ function buildFresh() {
 }
 
 async function createMemoryStore() {
-  const file = process.env.STORE_FILE || path.join(__dirname, '..', 'data', 'store.json')
+  const file = process.env.STORE_FILE
+    || (process.env.VERCEL ? path.join('/tmp', 'bakepulse-store.json') : path.join(__dirname, '..', 'data', 'store.json'))
   let state
   if (fs.existsSync(file)) {
     state = JSON.parse(fs.readFileSync(file, 'utf8'))
@@ -623,6 +624,7 @@ async function createMysqlStore(config) {
     charset: 'utf8mb4',
     timezone: '-05:00',
     enableKeepAlive: true,
+    connectTimeout: 8000,
     ssl: process.env.MYSQL_SSL === '0' ? undefined : { rejectUnauthorized: false },
   })
   const conn = await pool.getConnection()

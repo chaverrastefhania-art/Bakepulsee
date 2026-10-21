@@ -258,6 +258,10 @@ export function createApp() {
 
   app.use('/api/v1', v1)
 
+  app.get('/', (_req, res) => {
+    res.json({ ok: true, service: 'bakepulse-api', health: '/api/v1/health' })
+  })
+
   app.use((error, req, res, _next) => {
     const status = error.status || 500
     if (status === 500) console.error(error)
@@ -266,3 +270,5 @@ export function createApp() {
 
   return app
 }
+
+export default createApp()

@@ -1,3 +1,6 @@
-import { createApp } from './src/app.js'
+import express from 'express'
+import app from './src/app.js'
 
-export default createApp()
+void express
+
+export default app
