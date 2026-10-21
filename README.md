@@ -52,7 +52,7 @@ La primera conexión crea las tablas del modelo (roles, usuarios, direcciones, c
 
 ## Vercel
 
-El proyecto se publica desde la raíz del repositorio, no desde `frontend-bakepulse`. En el proyecto de Vercel, la raíz debe ser el repositorio completo. `vercel.json` construye la PWA y publica la API en `/api`.
+El proyecto de Vercel usa Services, con la raíz en el repositorio completo. `frontend-bakepulse` atiende el sitio y `backend-bakepulse` atiende `/api`. La PWA llama a `/api/v1` en el mismo dominio.
 
 ```bash
 npx vercel --prod
